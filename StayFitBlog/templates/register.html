@@ -1,0 +1,23 @@
+{% extends 'layout.html' %}
+{% block contents %}
+<div class="form-container">
+    <h2 class="text-center mb-4">Registration Form</h2>
+    <form method="POST" action="{{ url_for('register') }}">
+        {{ form.csrf_token }}
+        <div class="form-group">
+            {{ form.name.label(class="form-control-label") }}
+            {{ form.name(class="form-control", placeholder="Enter your name") }}
+        </div>
+        <div class="form-group">
+            {{ form.email.label(class="form-control-label") }}
+            {{ form.email(class="form-control", placeholder="Enter your email") }}
+        </div>
+        <div class="form-group">
+            {{ form.password.label(class="form-control-label") }}
+            {{ form.password(class="form-control", placeholder="Enter your password") }}
+        </div>
+       
+        <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
+    </form>
+</div>
+{% endblock %}
