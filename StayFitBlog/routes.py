@@ -5,7 +5,7 @@ from StayFitBlog import app, bcrypt,db
 from StayFitBlog.models import User, Post,add_user
 from StayFitBlog.forms import LoginForm, Register
 from StayFitBlog.forms import AddPostForm
-from flask_login import login_user
+from flask_login import login_user,logout_user
 
 
 @app.route('/')
@@ -74,3 +74,9 @@ def add_post():
         flash('Your post has been created!', 'success')
         return redirect(url_for('posts'))
     return render_template('add_post.html', title='Add Post', form=form)
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash('You have been logged out.', 'info')
+    return redirect(url_for('home'))

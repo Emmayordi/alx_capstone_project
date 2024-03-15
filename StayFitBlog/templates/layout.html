@@ -81,6 +81,24 @@
           <li class="nav-item">
             <a
               class="nav-link"
+              href="{{ url_for('add_post') }}"
+              style="color: #fff; margin-right: 15px"
+              >Add post</a
+            >
+          </li>
+          {% if current_user.is_authenticated %}
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              href="{{ url_for('logout') }}"
+              style="color: #fff; margin-right: 15px"
+              >Logout</a
+            >
+          </li>
+          {% else %}
+          <li class="nav-item">
+            <a
+              class="nav-link"
               href="{{ url_for('login') }}"
               style="color: #fff; margin-right: 15px"
               >Login</a
@@ -94,15 +112,7 @@
               >Post</a
             >
           </li>
-          <li class="nav-item">
-            <a
-              class="nav-link"
-              href="{{ url_for('add_post') }}"
-              style="color: #fff; margin-right: 15px"
-              >Add post</a
-            >
-          </li>
-          <!-- Add more menu items as needed -->
+          {% endif %}
         </ul>
       </div>
     </nav>
