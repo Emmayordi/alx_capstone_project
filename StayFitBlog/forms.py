@@ -1,15 +1,28 @@
 # forms.py
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, SubmitField
-from wtforms.validators import DataRequired, Length, Email
+from wtforms import StringField, TextAreaField, SubmitField, PasswordField, BooleanField
+from wtforms.validators import DataRequired, Length, Email, ValidationError
+from StayFitBlog.models import User
 
 class Register(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
-    password = StringField('Password', validators=[DataRequired(), Length(min=4, max=8)])
-    submit = SubmitField('Sign Up')
+    password = PasswordField('Password', validators=[DataRequired()])
+    submit = SubmitField('Register')
+    
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if user:
+            raise ValidationError('Email address already registered.')
 
+
+    
+class LoginForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    submit = SubmitField('Login')
+    
 class AddPostForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired(), Length(min=1, max=120)])
     content = TextAreaField('Content', validators=[DataRequired(), Length(min=1, max=1500)])
-    submit = SubmitField('Add Post')
+    submit = SubmitField('Add Post')   

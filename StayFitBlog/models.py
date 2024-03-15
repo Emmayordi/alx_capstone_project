@@ -1,57 +1,49 @@
-# models.py
+#models.py
+from flask_login import UserMixin
+from StayFitBlog import db, bcrypt ,login_manager 
+from flask_bcrypt import generate_password_hash, check_password_hash  
 import datetime
-from flask_sqlalchemy import SQLAlchemy
-from flask_bcrypt import Bcrypt
 
-db = SQLAlchemy()
-bcrypt = Bcrypt()
+@login_manager.user_loader
+def load_user(user_id):
+    # Assuming User is your user model and user_id is stored as an integer in the database
+    return User.query.get(int(user_id))
 
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
-    password = db.Column(db.String(120), nullable=False)
-    
-    # Let SQLAlchemy generate the backref for posts
-    posts = db.relationship('Post', lazy=True)
+    password_hash = db.Column(db.String(128), nullable=False)
+    posts = db.relationship('Post', backref='author', lazy=True)
 
-    def __repr__(self):
-        return f'name: {self.name}, email: {self.email}'
+    def set_password(self, password):
+        self.password_hash = bcrypt.generate_password_hash(password).decode('utf-8')
+
+    def check_password(self, password):
+        return bcrypt.check_password_hash(self.password_hash, password)
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(120), nullable=False)
     content = db.Column(db.String(1500), nullable=False)
-    date = db.Column(db.String(120), nullable=False)
-
+    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
-    # Let SQLAlchemy generate the backref for the User relationship
-    user = db.relationship('User', lazy=True)
-
     def __repr__(self):
-        return f'title: {self.title}, author: {self.user.name}'
+        return f'Post(title: {self.title}, author: {self.author.name})'
     
 def add_user(form):
+    # Correct variable assignments and User class instantiation
     name = form.name.data
     email = form.email.data
-    password = form.password.data
+    password = form.password.data  
+
+    # Hash the password correctly using the bcrypt instance
     hashed_pwd = bcrypt.generate_password_hash(password).decode('utf-8')
     
-    new_user = User(name=name, email=email, password=hashed_pwd)
-    db.session.add(new_user)
-    db.session.commit()
-
-
-def add_post_to_db(form):
-    title = form.title.data
-    content = form.content.data
-    date = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-
-    # Assuming you have a current_user object representing the logged-in user
-    user_id = current_user.id  # Make sure to import current_user from flask_login
-
-    new_post = Post(title=title, content=content, date=date, user_id=user_id)
-    db.session.add(new_post)
+    # Instantiate User with the correct field names
+    user = User(name=name, email=email, password_hash=hashed_pwd)
+    
+    db.session.add(user)
     db.session.commit()

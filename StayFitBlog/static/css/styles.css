@@ -1,5 +1,5 @@
 /* styles.css */
-/* styles.css */
+
 
 * {
     margin: 0;
@@ -13,6 +13,7 @@ body {
     padding: 0;
     overflow-x: hidden;
 }
+
 
 .home-background h1 {
     font-size: 5em;
@@ -39,32 +40,38 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('/static/assets/img/1.png');
+    background-image: url('/static/images/1.png'); /* Updated image path */
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    filter: blur(2px); /* Adjust the blur value as needed */
+    /*filter: blur(3px); /* Adjust the blur value as needed */
     z-index: -1;
     opacity: 0.7; /* Adjust the opacity for the desired effect */
 }
 
+
+
 /* Rest of your existing styles */
 
 .home-background {
-    position: relative;
-    height: 100vh;
-    width: 100vw;
     display: flex;
+    flex-direction: column; /* Stacks child elements vertically */
     align-items: center;
     justify-content: center;
+    height: 100vh;
+    width: 100vw;
     text-align: center;
 }
+
 
 .container {
     max-width: 100%;
     margin-top: 50px;
     background-color: transparent;
 }
+
+
+
 
 /* styles.css */
 
@@ -74,24 +81,64 @@ body {
     background-color: transparent;
 }
 
-.form-container {
-    max-width: 400px;
-    width: 100%;
-    margin: auto;
-}
-
 form {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin-top: 20px;
+    padding: 2rem;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    max-width: 400px; /* Limit form width */
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0 20px; /* Adjust spacing around the form */
 }
 
 .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 1rem; /* Spacing between form groups */
 }
 
+.form-group label {
+    display: block;
+    margin-bottom: .5rem; /* Spacing between label and input */
+}
+
+.form-group input,
+.form-group button {
+    width: 100%; /* Full width of the form group */
+    padding: 0.75rem; /* Padding inside inputs and button for better touch */
+    border: 1px solid #ccc; /* Subtle border around inputs */
+    border-radius: 4px; /* Rounded corners for inputs */
+    box-sizing: border-box; /* Ensure padding doesn't increase size */
+}
+
+.btn-primary {
+    background-color: #4CAF50; /* Green button */
+    border: none; /* No border for button */
+    cursor: pointer;
+    font-weight: bold; /* Make button text bold */
+}
+
+.btn-primary:hover {
+    background-color: #45a049; /* Darker shade on hover */
+}
+
+.alert {
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    border-radius: 4px;
+    border: 1px solid transparent;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    color: #721c24; /* Text color for danger alerts */
+}
+
+.alert-success {
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    color: #155724; /* Text color for success alerts */
+}
 @media (min-width: 576px) {
     .form-container {
         margin-top: 100px;
