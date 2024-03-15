@@ -1,13 +1,16 @@
+<!-- Inside posts.html -->
 {% extends 'layout.html' %} {% block contents %}
 <div class="container">
-  <h1>All Posts</h1>
+  <!-- Existing posts display -->
   {% for post in posts %}
   <div class="post">
     <h2>{{ post.title }}</h2>
     <p>{{ post.content }}</p>
+    <!-- Add more details as needed -->
   </div>
-  {% else %}
-  <p>No posts available.</p>
   {% endfor %}
+
+  <!-- Add Post Button -->
+  <a href="{{ url_for('add_post') }}" class="btn btn-primary">Add New Post</a>
 </div>
-{% endblock contents %}
+{% endblock %}

@@ -4,7 +4,7 @@ from flask_login import login_required, current_user
 from StayFitBlog import app, bcrypt,db
 from StayFitBlog.models import User, Post,add_user
 from StayFitBlog.forms import LoginForm, Register
-
+from StayFitBlog.forms import AddPostForm
 from flask_login import login_user
 
 
@@ -45,11 +45,15 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         result = User.query.filter_by(email=form.email.data).first()
-        if result and bcrypt.check_password_hash(result.password, form.password.data):
+        # Move the password check and the login inside the if block
+        if result and bcrypt.check_password_hash(result.password_hash, form.password.data):
             login_user(result)
             flash('Login Successful', 'success')
-            return redirect(url_for('posts'))
+            return redirect(url_for('posts'))  # Assuming you want to redirect to the homepage
+    # Render the login template if not a POST request or if validation/login fails
     return render_template('login.html', title='Login', form=form)
+
+
 
 
 
@@ -60,15 +64,13 @@ def posts():
     return render_template('posts.html', title='All Posts', posts=all_posts)
 
 @app.route('/add_post', methods=['GET', 'POST'])
+@login_required
 def add_post():
-    """"
     form = AddPostForm()
     if form.validate_on_submit():
-        # Corrected line to use 'user_id' instead of 'author_id'
         new_post = Post(title=form.title.data, content=form.content.data, user_id=current_user.id)
         db.session.add(new_post)
         db.session.commit()
         flash('Your post has been created!', 'success')
         return redirect(url_for('posts'))
-    """
-    return render_template('add_post.html', title='Add post')
+    return render_template('add_post.html', title='Add Post', form=form)
