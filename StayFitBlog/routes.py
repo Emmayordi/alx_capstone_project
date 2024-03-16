@@ -1,5 +1,5 @@
 # routes.py
-from flask import render_template, redirect, url_for, flash, request
+from flask import render_template, redirect, url_for, flash, request,abort
 from flask_login import login_required, current_user
 from StayFitBlog import app, bcrypt,db
 from StayFitBlog.models import User, Post,add_user
@@ -23,21 +23,20 @@ def register():
         # Check if the email already exists in the database
         existing_user = User.query.filter_by(email=form.email.data).first()
         if existing_user:
-            # If a user is found with the submitted email, flash a message and return to the form
+            
             flash('Email address already registered.', 'danger')
             return render_template('register.html', title='Register', form=form)
         
-        # Proceed with registration because the email is not in use
+    
         user = User(email=form.email.data, name=form.name.data)
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
         
-        # Notify the user of successful registration
+        
         flash('Registration successful! Please log in.', 'success')
         return redirect(url_for('login'))
-    
-    # For GET requests or if form validation fails, just render the registration form
+
     return render_template('register.html', title='Register', form=form)
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -45,7 +44,7 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         result = User.query.filter_by(email=form.email.data).first()
-        # Move the password check and the login inside the if block
+        
         if result and bcrypt.check_password_hash(result.password_hash, form.password.data):
             login_user(result)
             flash('Login Successful', 'success')
@@ -63,6 +62,28 @@ def posts():
     all_posts = Post.query.all()
     return render_template('posts.html', title='All Posts', posts=all_posts)
 
+#Edite post
+@app.route('/edit_post/<int:post_id>', methods=['GET', 'POST'])
+@login_required
+def edit_post(post_id):
+    post = Post.query.get_or_404(post_id)
+    if post.author != current_user:
+        abort(403)  # Forbidden access
+    form = AddPostForm(obj=post)
+    if form.validate_on_submit():
+        post.title = form.title.data
+        post.content = form.content.data
+        db.session.commit()
+        flash('Your post has been updated!', 'success')
+        return redirect(url_for('post_detail', post_id=post.id))
+    return render_template('edit_post.html', title='Edit Post', form=form, post=post)
+
+
+
+
+
+
+#Add Post
 @app.route('/add_post', methods=['GET', 'POST'])
 @login_required
 def add_post():
@@ -74,9 +95,17 @@ def add_post():
         flash('Your post has been created!', 'success')
         return redirect(url_for('posts'))
     return render_template('add_post.html', title='Add Post', form=form)
+#Logout
 @app.route('/logout')
 @login_required
 def logout():
     logout_user()
     flash('You have been logged out.', 'info')
     return redirect(url_for('home'))
+
+@app.route('/post/<int:post_id>')
+def post_detail(post_id):
+    post = Post.query.get_or_404(post_id)
+    return redirect(url_for('posts'))
+    return render_template('post_detail.html', title=post.title, post=post)
+

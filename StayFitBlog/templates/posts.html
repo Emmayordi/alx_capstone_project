@@ -1,18 +1,28 @@
-<!-- Inside posts.html -->
+<!-- posts.html -->
 {% extends 'layout.html' %} {% block contents %}
 <div class="container">
-  <!-- Existing posts display -->
+  <!-- Loop through posts once to display each post and its edit button conditionally -->
   {% for post in posts %}
   <div class="post">
     <h2>{{ post.title }}</h2>
     <p>{{ post.content }}</p>
-    <p>Authored by :{{ post.author.name }} Date:{{ post.date_posted }}</p>
-
-    <!-- Add more details as needed -->
+    <p>
+      Authored by: {{ post.author.name }} Date: {{
+      post.date_posted.strftime('%Y-%m-%d') }}
+    </p>
+    {% if current_user.is_authenticated and current_user.id == post.user_id %}
+    <a
+      href="{{ url_for('edit_post', post_id=post.id) }}"
+      class="btn btn-secondary"
+      >Edit</a
+    >
+    {% endif %}
   </div>
   {% endfor %}
 
-  <!-- Add Post Button -->
+  <!-- Add Post Button, shown to authenticated users -->
+  {% if current_user.is_authenticated %}
   <a href="{{ url_for('add_post') }}" class="btn btn-primary">Add New Post</a>
+  {% endif %}
 </div>
 {% endblock %}
