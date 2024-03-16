@@ -6,7 +6,7 @@ import datetime
 
 @login_manager.user_loader
 def load_user(user_id):
-    # Assuming User is your user model and user_id is stored as an integer in the database
+   
     return User.query.get(int(user_id))
 
 
@@ -31,15 +31,15 @@ class Post(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     def __repr__(self):
-        return f'Post(title: {self.title}, author: {self.author.name})'
+        return f'Get(title: {self.title}, author: {self.author.name})'
     
 def add_user(form):
-    # Correct variable assignments and User class instantiation
+   
     name = form.name.data
     email = form.email.data
     password = form.password.data  
 
-    # Hash the password correctly using the bcrypt instance
+  
     hashed_pwd = bcrypt.generate_password_hash(password).decode('utf-8')
     
     # Instantiate User with the correct field names
