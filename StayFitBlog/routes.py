@@ -43,13 +43,13 @@ def login():
 
 
 from flask import flash
-# Your other imports...
+
 
 @app.route('/register', methods=['POST', 'GET'])
 def register():
     form = RegisterForm()
     if form.validate_on_submit():
-        add_user(form)  # Call add_user to process user registration
+        add_user(form)  
         flash('Registration successful! You can now log in.', 'success')
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
