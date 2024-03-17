@@ -13,20 +13,12 @@ body {
     padding: 0;
     overflow-x: hidden;
 }
-/* Custom Hamburger Menu Icon */
-.navbar-toggler {
-    border-color: transparent;
-}
-
-.navbar-toggler-icon {
-    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255, 255, 255, 0.5)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
-}
 
 
 .home-background h1 {
     font-size: 5em;
     font-weight: bold;
-    color: #4CAF50; /* Green color for a healthy and fresh look */
+    color: hsl(120, 11%, 9%); /* Green color for a healthy and fresh look */
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     margin-bottom: 20px;
 }
@@ -40,7 +32,7 @@ body {
     clear: both; 
 }
 
-/* Add a semi-transparent overlay with a blurred background image */
+/* Add a semi-transparent overlay with a blurred background image 
 .home-background::before {
     content: '';
     position: absolute;
@@ -48,15 +40,15 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('/static/images/1.png'); /* Updated image path */
+    background-image: url('/static/images/1.png'); 
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    /*filter: blur(3px); /* Adjust the blur value as needed */
+    
     z-index: -1;
-    opacity: 0.7; /* Adjust the opacity for the desired effect */
+    opacity: 0.7; 
 }
-
+*/
 
 
 /* Rest of your existing styles */
@@ -175,7 +167,7 @@ form {
 }
 
 .navbar {
-    background-color: #0b59b9;
+    background-color: #333333;
     padding: 15px;
 }
 
@@ -189,7 +181,7 @@ form {
 }
 
 .footer {
-    background-color: #333;
+    background-color: #4f4848;
     color: #fff;
 }
 

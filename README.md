@@ -34,11 +34,11 @@ StayFitBlog is a health and lifestyle blog web application designed to inspire a
 
 ## Screenshots or Demo:
 
-![Alt text for image](![alt text](<StayFitBlog/static/images/Screenshot 2024-03-16 at 12.23.08 AM.png>) "Optional title")
-![Alt text for image](![alt text](<StayFitBlog/static/images/Screenshot 2024-03-16 at 12.24.24 AM.png>) "Optional title")
-![Alt text for image](U![alt text](<StayFitBlog/static/images/Screenshot 2024-03-16 at 12.25.02 AM.png>) "Optional title")
-![Alt text for image](![alt text](<StayFitBlog/static/images/Screenshot 2024-03-16 at 12.27.39 AM.png>) "Optional title")
-![Alt text for image](![alt text](<StayFitBlog/static/images/Screenshot 2024-03-16 at 12.28.10 AM.png>) "Optional title")
+![Alt text for image](![alt text]() "Optional title")
+![Alt text for image](![alt text]() "Optional title")
+![Alt text for image](U![alt text]() "Optional title")
+![Alt text for image](![alt text]() "Optional title")
+![Alt text for image](![alt text]() "Optional title")
 
 ## Roadmap and Future Enhancements:
 
@@ -59,7 +59,7 @@ i am committed to expanding StayFitBlog's features and enhancing the user experi
 
 ## Contact Information:
 
-- **Name:** [Your Name]
+- **Name:** [Yordanos A]
 - **Email:** [Your Email]
 - **LinkedIn:** [Your LinkedIn Profile]
 - **GitHub:** [Your GitHub Profile]

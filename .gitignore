@@ -9,3 +9,6 @@ config.py
 # Ignore configeration 
 __init__.py
 
+migrations
+
+images

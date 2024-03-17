@@ -1,27 +1,37 @@
 {% extends 'layout.html' %} {% block contents %}
 <div class="container">
+  <!-- Display flash messages, if any -->
   {% with messages = get_flashed_messages(with_categories=true) %} {% for
   category, message in messages %}
   <div class="alert alert-{{ category }}">{{ message }}</div>
   {% endfor %} {% endwith %}
 
+  <!-- Login Form -->
   <form method="POST" action="{{ url_for('login') }}">
     {{ form.csrf_token }}
+
     <div class="form-group">
-      {{ form.email.label }} {{ form.email }} {% if form.email.errors %} {% for
+      {{ form.email.label(class="form-label") }} {{
+      form.email(class="form-control") }} {% if form.email.errors %} {% for
       error in form.email.errors %}
       <div class="alert alert-danger">{{ error }}</div>
       {% endfor %} {% endif %}
     </div>
 
     <div class="form-group">
-      {{ form.password.label }} {{ form.password }} {% if form.password.errors
-      %} {% for error in form.password.errors %}
+      {{ form.password.label(class="form-label") }} {{
+      form.password(class="form-control") }} {% if form.password.errors %} {%
+      for error in form.password.errors %}
       <div class="alert alert-danger">{{ error }}</div>
       {% endfor %} {% endif %}
     </div>
 
     <button type="submit" class="btn btn-primary">Login</button>
   </form>
+
+  <!-- Registration Link -->
+  <div class="text-center mt-3">
+    <a href="{{ url_for('register') }}">Don't have an account? Register</a>
+  </div>
 </div>
 {% endblock %}

@@ -1,34 +1,14 @@
 {% extends 'layout.html' %} {% block contents %}
-<div class="container2">
-  {% with messages = get_flashed_messages(with_categories=true) %} {% for
-  category, message in messages %}
-  <div class="alert alert-{{ category }}">{{ message }}</div>
-  {% endfor %} {% endwith %}
-
+<div class="register">
+  <h2>Register</h2>
   <form method="POST" action="{{ url_for('register') }}">
-    {{ form.csrf_token }}
-    <div class="form-group">
-      {{ form.email.label }} {{ form.email }} {% if form.email.errors %} {% for
-      error in form.email.errors %}
-      <div class="alert alert-danger">{{ error }}</div>
-      {% endfor %} {% endif %}
-    </div>
+    {{ form.hidden_tag() }}
+    <div>{{ form.name.label }} {{ form.name() }}</div>
+    <!-- Corrected from username to name -->
+    <div>{{ form.email.label }} {{ form.email() }}</div>
+    <div>{{ form.password.label }} {{ form.password() }}</div>
 
-    <div class="form-group">
-      {{ form.name.label }} {{ form.name }} {% if form.name.errors %} {% for
-      error in form.name.errors %}
-      <div class="alert alert-danger">{{ error }}</div>
-      {% endfor %} {% endif %}
-    </div>
-
-    <div class="form-group">
-      {{ form.password.label }} {{ form.password }} {% if form.password.errors
-      %} {% for error in form.password.errors %}
-      <div class="alert alert-danger">{{ error }}</div>
-      {% endfor %} {% endif %}
-    </div>
-
-    <button type="submit" class="btn btn-primary">Register</button>
+    <button type="submit">Register</button>
   </form>
 </div>
 {% endblock %}

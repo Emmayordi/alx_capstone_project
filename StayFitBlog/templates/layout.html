@@ -1,3 +1,4 @@
+<!---Layout.html-->
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -9,20 +10,19 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
     <title>
-      {% if title is none %} StayfitBlog {% else %} {{ title }} {% endif %}
+      {% block title %}{% if title %}{{ title }} - StayfitBlog{% else
+      %}StayfitBlog{% endif %}{% endblock %}
     </title>
     <!-- Bootstrap CSS -->
     <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
     />
-
     <!-- Font Awesome CSS -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
     />
-
     <!-- Custom Styles -->
     <link
       rel="stylesheet"
@@ -41,7 +41,6 @@
         style="color: #fff; margin-right: 25px"
         >StayfitBlog</a
       >
-      <!-- Page Content -->
       <button
         class="navbar-toggler"
         type="button"
@@ -63,40 +62,7 @@
               >Home <span class="sr-only">(current)</span></a
             >
           </li>
-          <li class="nav-item">
-            <a
-              class="nav-link"
-              href="{{ url_for('about') }}"
-              style="color: #fff; margin-right: 15px"
-              >About</a
-            >
-          </li>
-          <li class="nav-item">
-            <a
-              class="nav-link"
-              href="{{ url_for('register') }}"
-              style="color: #fff; margin-right: 15px"
-              >Register</a
-            >
-          </li>
-          <li class="nav-item">
-            <a
-              class="nav-link"
-              href="{{ url_for('add_post') }}"
-              style="color: #fff; margin-right: 15px"
-              >Add post</a
-            >
-          </li>
-          {% if current_user.is_authenticated %}
-          <li class="nav-item">
-            <a
-              class="nav-link"
-              href="{{ url_for('logout') }}"
-              style="color: #fff; margin-right: 15px"
-              >Logout</a
-            >
-          </li>
-          {% else %}
+          {% if not current_user.is_authenticated %}
           <li class="nav-item">
             <a
               class="nav-link"
@@ -108,9 +74,26 @@
           <li class="nav-item">
             <a
               class="nav-link"
-              href="{{ url_for('posts') }}"
+              href="{{ url_for('register') }}"
               style="color: #fff; margin-right: 15px"
-              >Post</a
+              >Register</a
+            >
+          </li>
+          {% else %}
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              href="{{ url_for('logout') }}"
+              style="color: #fff; margin-right: 15px"
+              >Logout</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              href="{{ url_for('add_post') }}"
+              style="color: #fff; margin-right: 15px"
+              >Add Post</a
             >
           </li>
           {% endif %}
@@ -118,32 +101,31 @@
       </div>
     </nav>
 
+    <!-- Flash Messages -->
+    <div class="container mt-3">
+      {% with messages = get_flashed_messages(with_categories=true) %} {% if
+      messages %} {% for category, message in messages %}
+      <div class="alert alert-{{ category }}">{{ message }}</div>
+      {% endfor %} {% endif %} {% endwith %}
+    </div>
+
     <!-- Page Content -->
-    <div class="container mt-3">{% block contents %} {% endblock %}</div>
+    <div class="container mt-3">
+      {% block contents %}
+      <!-- This block will be overridden by child templates -->
+      {% endblock contents %}
+    </div>
 
     <!-- Footer -->
     <footer class="footer mt-auto py-3">
       <div class="container">
         <div class="row">
           <div class="col-md-6">
-            <!-- Social Media Links with Font Awesome Icons -->
-            <ul class="list-inline">
-              <li class="list-inline-item">
-                <a href="#" target="_blank"><i class="fab fa-facebook"></i></a>
-              </li>
-              <li class="list-inline-item">
-                <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
-              </li>
-              <li class="list-inline-item">
-                <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
-              </li>
-              <!-- Add more social media links as needed -->
-            </ul>
+            <!-- Social Media Links -->
           </div>
           <div class="col-md-6 text-md-right">
-            <!-- Copyright Notice -->
             <p class="text-muted mb-0">
-              &copy; {{ current_year }} Your StayfitBlog. All rights reserved.
+              &copy; {{ current_year }} StayfitBlog. All rights reserved.
             </p>
           </div>
         </div>
