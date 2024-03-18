@@ -34,9 +34,9 @@ StayFitBlog is a health and lifestyle blog web application designed to inspire a
 
 ## Screenshots or Demo:
 
-![Alt text for image](![alt text]() "Optional title")
-![Alt text for image](![alt text]() "Optional title")
-![Alt text for image](U![alt text]() "Optional title")
+![Alt text for image](![alt text](![alt text](<StayFitBlog/static/images/Screenshot 2024-03-18 at 1.46.29 AM.png>)) "Optional title")
+![Alt text for image](![alt text](<![alt text](<StayFitBlog/static/images/Screenshot 2024-03-18 at 1.46.04 AM.png>)>) "Optional title")
+![Alt text for image](U![alt text](<![alt text](<StayFitBlog/static/images/Screenshot 2024-03-18 at 1.46.29 AM.png>)>) "Optional title")
 ![Alt text for image](![alt text]() "Optional title")
 ![Alt text for image](![alt text]() "Optional title")
 
