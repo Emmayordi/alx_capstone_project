@@ -5,6 +5,7 @@ from StayFitBlog.models import User, Post, Comment,add_user
 from StayFitBlog.forms import LoginForm, RegisterForm, AddPostForm, CommentForm
 
 from bleach import clean
+
 @app.route('/search')
 def search():
     query = request.args.get('q', '')  # Getting the search term from the query string
@@ -25,7 +26,7 @@ def home():
             flash('Login Unsuccessful. Please check email and password.', 'danger')
     posts = Post.query.all()
     return render_template('home.html', posts=posts, login_form=login_form if not current_user.is_authenticated else None)
-#Healthy Life Style
+#Login
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
@@ -50,7 +51,7 @@ def login():
 
 from flask import flash
 
-
+#Register
 @app.route('/register', methods=['POST', 'GET'])
 def register():
     form = RegisterForm()
@@ -61,14 +62,14 @@ def register():
     return render_template('register.html', title='Register', form=form)
     return render_template('register.html', title='Register', form=form)
 
-
+#Logoout
 @app.route('/logout')
 @login_required
 def logout():
     logout_user()
     flash('You have been logged out.', 'info')
     return redirect(url_for('home'))
-
+#Add_Post
 @app.route('/add_post', methods=['GET', 'POST'])
 @login_required
 def add_post():
@@ -80,27 +81,54 @@ def add_post():
         flash('Your post has been created!', 'success')
         return redirect(url_for('home'))
     return render_template('add_post.html', title='Add Post', form=form)
-
+#Post deatal
 @app.route('/post/<int:post_id>', methods=['GET', 'POST'])
 def post_detail(post_id):
-    post = Post.query.get_or_404(post_id)
+    post = Post.query.get_or_404(post_id)  # Retrieve the post or 404
     form = CommentForm()
-    if form.validate_on_submit() and current_user.is_authenticated:
-        safe_content = clean(form.content.data)
-        comment = Comment(content=safe_content, user_id=current_user.id, post_id=post_id)
+    if form.validate_on_submit():
+        if current_user.is_authenticated:
+            # Create and add the new comment to the database
+            comment = Comment(content=form.content.data, user_id=current_user.id, post_id=post_id)
+            db.session.add(comment)
+            db.session.commit()
+            flash('Your comment has been added.', 'success')
+        else:
+            flash('You need to be logged in to comment.', 'danger')
+        return redirect(url_for('post_detail', post_id=post_id))
+    
+    comments = Comment.query.filter_by(post_id=post_id).all()  # Retrieve all comments for this post
+    return render_template('post_detail.html', post=post, form=form, comments=comments)
+
+
+#Commint
+@app.route('/post/<int:post_id>/comment', methods=['POST'])
+@login_required
+def comment_post(post_id):
+    form = CommentForm()
+    if form.validate_on_submit():
+        comment = Comment(content=form.content.data, user_id=current_user.id, post_id=post_id)
         db.session.add(comment)
         db.session.commit()
         flash('Your comment has been added.', 'success')
-    elif form.validate_on_submit() and not current_user.is_authenticated:
-        flash('You need to login to comment.', 'info')
-        return redirect(url_for('login', next=url_for('post_detail', post_id=post_id)))
-    comments = Comment.query.filter_by(post_id=post_id).all()  # Assuming you have a way to retrieve comments
-    return render_template('post_detail.html', title=post.title, post=post, form=form, comments=comments)
+    else:
+        for error in form.content.errors:
+            flash(error, 'danger')
+    return redirect(url_for('post_detail', post_id=post_id))
+#Edit
 @app.route('/edit_post/<int:post_id>', methods=['GET', 'POST'])
-@login_required
 def edit_post(post_id):
     post = Post.query.get_or_404(post_id)
-    if post.author.id != current_user.id:
-        flash('You cannot edit this post.', 'danger')
-        return redirect(url_for('home'))
-    # Proceed with edit logic
+    if current_user.id != post.author.id:
+        abort(403)
+    form = PostForm()
+    if form.validate_on_submit():
+        post.title = form.title.data
+        post.content = form.content.data
+        db.session.commit()
+        flash('Your post has been updated!', 'success')
+        return redirect(url_for('post_detail', post_id=post.id))
+    elif request.method == 'GET':
+        form.title.data = post.title
+        form.content.data = post.content
+    return render_template('edit_post.html', title='Edit Post', form=form, post=post)

@@ -201,3 +201,43 @@ body {
     background-color: #0069d9;
     border-color: #0062cc;
   }
+
+  /*Card*/
+  .posts-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Adjust the space between cards */
+  }
+  
+  .post-card {
+    background-color: #f9f9f9;
+    border: 1px solid #e1e1e1;
+    border-radius: 5px;
+    padding: 15px;
+    width: calc(33.333% - 20px); /* Three cards per row - adjust gap if needed */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  .post-card h2 {
+    margin-top: 0;
+  }
+  
+  .read-more-btn, .add-post-btn, .login-to-add-post-btn {
+    display: inline-block;
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 10px;
+  }
+  
+  .read-more-btn:hover, .add-post-btn:hover, .login-to-add-post-btn:hover {
+    background-color: #0056b3;
+  }
+  @media (max-width: 768px) {
+    .post-card {
+      width: 100%; /* Full width for smaller screens */
+    }
+  }
+  
