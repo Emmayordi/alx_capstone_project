@@ -30,15 +30,16 @@ StayFitBlog is a health and lifestyle blog web application designed to inspire a
 - HTML, CSS, JavaScript for the frontend.
 - Python and Flask for server-side logic.
 - PostgreSQL for data management.
-- Bootstrap for responsive design.
+- responsive design.
 
 ## Screenshots or Demo:
 
-![Alt text for image](![alt text](![alt text](<StayFitBlog/static/images/Screenshot 2024-03-18 at 1.46.29 AM.png>)) "Optional title")
-![Alt text for image](![alt text](<![alt text](<StayFitBlog/static/images/Screenshot 2024-03-18 at 1.46.04 AM.png>)>) "Optional title")
-![Alt text for image](U![alt text](<![alt text](<StayFitBlog/static/images/Screenshot 2024-03-18 at 1.46.29 AM.png>)>) "Optional title")
-![Alt text for image](![alt text]() "Optional title")
-![Alt text for image](![alt text]() "Optional title")
+![Alt text](![alt text](<StayFitBlog/static/images/Screenshot 2024-03-18 at 1.45.03 AM.png>) "Optional title")
+
+## Screenshots or Demo:
+
+![StayFitBlog Screenshot 1](![alt text](<StayFitBlog/static/images/Screenshot 2024-03-18 at 1.45.03 AM.png>)URL_to_image_1 "Home Page")
+![StayFitBlog Screenshot 2](![alt text](<StayFitBlog/static/images/Screenshot 2024-03-18 at 1.46.04 AM.png>)URL_to_image_2 "Blog Post Example")
 
 ## Roadmap and Future Enhancements:
 
