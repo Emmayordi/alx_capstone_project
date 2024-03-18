@@ -5,6 +5,12 @@ from StayFitBlog.models import User, Post, Comment,add_user
 from StayFitBlog.forms import LoginForm, RegisterForm, AddPostForm, CommentForm
 
 from bleach import clean
+@app.route('/search')
+def search():
+    query = request.args.get('q', '')  # Getting the search term from the query string
+    # Perform search logic here, possibly querying your database
+    # For demonstration purposes, we'll just return a simple response
+    return f"Search results for: {query}"
 
 @app.route('/', methods=['GET', 'POST'])
 def home():

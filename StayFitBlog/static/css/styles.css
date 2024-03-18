@@ -14,177 +14,190 @@ body {
     overflow-x: hidden;
 }
 
-
-.home-background h1 {
-    font-size: 5em;
-    font-weight: bold;
-    color: hsl(120, 11%, 9%); /* Green color for a healthy and fresh look */
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    margin-bottom: 20px;
-}
-
-.home-background p.tagline {
-    display: block;
-    margin-top: 20px;
-    font-size: 2em;
-    font-weight: bold;
-    color: #4CAF50;
-    clear: both; 
-}
-
-/* Add a semi-transparent overlay with a blurred background image 
-.home-background::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url('/static/images/1.png'); 
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    
-    z-index: -1;
-    opacity: 0.7; 
-}
-*/
-
-
-/* Rest of your existing styles */
-
-.home-background {
+.custom-navbar {
+    background-color: #1253a8;
     display: flex;
-    flex-direction: column; /* Stacks child elements vertically */
+    justify-content: space-between;
     align-items: center;
-    justify-content: center;
-    height: 100vh;
-    width: 100vw;
+    padding: 0.5rem 1rem;
+}
+  
+.navbar-brand {
+    color: #fff;
+    text-decoration: none;
+}
+
+.nav-items {
+    list-style: none;
+    display: flex;
+    padding: 0;
+    margin: 0;
+    margin-right: 1rem;
+}
+
+.nav-item a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+.search-form {
+    display: flex;
+}
+
+.search-form input, .search-form button {
+    padding: 0.5rem;
+}
+
+.search-form input {
+    margin-right: 0.5rem;
+}
+  
+  .navbar-toggler {
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .navbar-toggler-icon {
+    display: block;
+    width: 30px;
+    height: 3px;
+    background-color: #fff;
+    margin: 5px 0; /* Creates the hamburger icon */
+  }
+  
+  /* For larger screens, display the nav items */
+  @media (min-width: 768px) {
+    .nav-items {
+      display: block;
+    }
+  }
+  /* General Container */
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 0 15px;
+  }
+  
+  /* Utility Classes */
+  .mt-3 {
+    margin-top: 1rem; /* Adjust the value as per your design */
+  }
+  
+  .mt-auto {
+    margin-top: auto;
+  }
+  
+  .py-3 {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+  
+  .text-md-right {
+    text-align: right;
+  }
+  
+  /* Flash Messages */
+  .alert {
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 1rem;
+    border-radius: 0.25rem;
+    color: #004085;
+    background-color: #cce5ff;
+    border-color: #b8daff;
+  }
+  
+  /* Adjust colors based on the category of the message */
+  .alert-success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+  }
+  
+  .alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+  }
+  
+  /* Footer */
+  .footer {
+    background-color: #1253a8; /* Your desired background color */
+    color: white;
     text-align: center;
-}
-
-
-.container {
-    max-width: 100%;
-    margin-top: 50px;
-    background-color: transparent;
-}
-
-
-
-
-/* styles.css */
-
-.container {
-    max-width: 100%;
-    margin-top: 50px;
-    background-color: transparent;
-}
-
-form {
-    padding: 2rem;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    max-width: 400px; /* Limit form width */
+    padding: 10px 0;
+    position: fixed;
+    bottom: 0;
     width: 100%;
-    box-sizing: border-box;
-    margin: 0 20px; /* Adjust spacing around the form */
+  }
+  
+  .social-links {
+    margin-bottom: 0;
+    padding: 0;
+  }
+  
+  .social-links a {
+    color: white; /* Adjust if needed */
+    margin: 0 10px;
+    font-size: 24px; /* Adjust icon size as needed */
+  }
+  
+  .social-links a:hover {
+    color: #ddd; /* Adjust hover color as needed */
+  }
+  
+  /* Ensuring the content doesn't overlap with the fixed footer */
+  body {
+    padding-bottom: 60px; /* Adjust this value based on your footer's height */
+  }
+  .login-to-post {
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  .login-to-post-link {
+    display: inline-block;
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.2s
 }
 
 .form-group {
-    margin-bottom: 1rem; /* Spacing between form groups */
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: .5rem; /* Spacing between label and input */
-}
-
-.form-group input,
-.form-group button {
-    width: 100%; /* Full width of the form group */
-    padding: 0.75rem; /* Padding inside inputs and button for better touch */
-    border: 1px solid #ccc; /* Subtle border around inputs */
-    border-radius: 4px; /* Rounded corners for inputs */
-    box-sizing: border-box; /* Ensure padding doesn't increase size */
-}
-
-.btn-primary {
-    background-color: #4CAF50; /* Green button */
-    border: none; /* No border for button */
-    cursor: pointer;
-    font-weight: bold; /* Make button text bold */
-}
-
-.btn-primary:hover {
-    background-color: #45a049; /* Darker shade on hover */
-}
-
-.alert {
-    padding: 0.75rem;
     margin-bottom: 1rem;
-    border-radius: 4px;
-    border: 1px solid transparent;
-}
-
-.alert-danger {
-    background-color: #f8d7da;
-    border-color: #f5c6cb;
-    color: #721c24; /* Text color for danger alerts */
-}
-
-.alert-success {
-    background-color: #d4edda;
-    border-color: #c3e6cb;
-    color: #155724; /* Text color for success alerts */
-}
-@media (min-width: 576px) {
-    .form-container {
-        margin-top: 100px;
-    }
-}
-
-.btn-primary {
+  }
+  
+  .form-label {
+    display: block;
+    margin-bottom: .5rem;
+  }
+  
+  .form-control {
     width: 100%;
-    padding: 12px;
-    box-sizing: border-box;
-    background-color: #4CAF50; /* Green button color */
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  }
+  
+  .btn {
     color: #fff;
-    border: none;
-    border-radius: 5px;
+    background-color: #007bff;
+    border-color: #007bff;
+    padding: .375rem .75rem;
+    border-radius: .25rem;
     cursor: pointer;
-}
-
-.btn-primary:hover {
-    background-color: #45a049; /* Darker green on hover */
-}
-
-@media (min-width: 576px) {
-    .container {
-        margin-top: 100px;
-    }
-}
-
-.navbar {
-    background-color: #333333;
-    padding: 15px;
-}
-
-.navbar-light .navbar-brand {
-    color: #fff;
-}
-
-.navbar-light .navbar-nav .nav-link {
-    color: #fff;
-    margin-right: 50px;
-}
-
-.footer {
-    background-color: #4f4848;
-    color: #fff;
-}
-
-.list-inline-item a {
-    color: #fff;
-}
+  }
+  
+  .btn:hover {
+    background-color: #0069d9;
+    border-color: #0062cc;
+  }

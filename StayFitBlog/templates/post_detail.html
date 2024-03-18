@@ -1,8 +1,10 @@
+<!-- Post Detail Template -->
+
 {% extends 'layout.html' %} {% block contents %}
 <div class="post-detail">
-  <!-- Assuming you have a post object passed to the template -->
   <h2>{{ post.title }}</h2>
   <p>{{ post.content }}</p>
+
   <!-- Display comments -->
   {% for comment in post.comments %}
   <div class="comment">
@@ -13,12 +15,19 @@
     >
   </div>
   {% endfor %}
+
   <!-- Add a new comment -->
   {% if current_user.is_authenticated %}
   <form action="{{ url_for('comment_post', post_id=post.id) }}" method="POST">
     {{ form.csrf_token }} {{ form.content }}
     <button type="submit" class="btn btn-primary">Add Comment</button>
   </form>
-  {% endif %}
+  {% else %} {% if not current_user.is_authenticated %}
+  <div class="login-to-post">
+    <a href="{{ url_for('login') }}" class="login-to-post-link"
+      >Login to post a comment</a
+    >
+  </div>
+  {% endif %}s {% endif %}
 </div>
 {% endblock %}
