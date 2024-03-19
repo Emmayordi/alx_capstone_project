@@ -1,3 +1,4 @@
+#models.py
 from flask_login import UserMixin
 from StayFitBlog import db, bcrypt, login_manager
 from datetime import datetime
@@ -11,9 +12,8 @@ class User(db.Model, UserMixin):
     name = db.Column(db.String(80), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(128))
-    posts = db.relationship('Post', backref='author', lazy='dynamic')
-    # Ensuring 'comments' backref is correctly defined
-    comments = db.relationship('Comment', back_populates='commenter', lazy='dynamic')
+    posts = db.relationship('Post', backref='author', lazy=True)
+    comments = db.relationship('Comment', backref='comment', lazy='dynamic') # Note the change here
 
     def set_password(self, password):
         self.password_hash = bcrypt.generate_password_hash(password).decode('utf-8')
@@ -27,7 +27,7 @@ class Post(db.Model):
     content = db.Column(db.String(1500), nullable=False)
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    comments = db.relationship('Comment', backref='post', lazy=True)
+    comments = db.relationship('Comment', backref='post', lazy='dynamic')
 
 class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -35,13 +35,15 @@ class Comment(db.Model):
     date_posted = db.Column(db.DateTime, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
-    # Ensuring the relationship to User is correctly back_populated
-    commenter = db.relationship('User', back_populates='comments')
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user = db.relationship('User', backref='comment')
+
 
 def add_user(form):
     name = form.name.data
     email = form.email.data
     hashed_pwd = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+    
     user = User(name=name, email=email, password_hash=hashed_pwd)
     db.session.add(user)
     db.session.commit()

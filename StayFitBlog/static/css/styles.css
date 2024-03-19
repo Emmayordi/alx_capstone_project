@@ -7,7 +7,7 @@
 }
 
 body {
-    background-color: #f5f5f5; /* Light gray background for a calm feel */
+    background-color: hwb(72 57% 23%); /* Light gray background for a calm feel */
     color: #333; /* Dark gray font color for better readability */
     margin: 0;
     padding: 0;
@@ -240,4 +240,65 @@ body {
       width: 100%; /* Full width for smaller screens */
     }
   }
+  .post-wrapper {
+    display: flex;
+    margin-bottom: 20px; /* Adjust spacing between post-wrapper */
+  }
   
+  .post-card {
+    flex: 1; /* Adjust the width of the post cards */
+  }
+  
+  .image-card {
+    width: 300px; /* Adjust the width of the image cards */
+    margin-left: 20px; /* Adjust spacing between post cards and image cards */
+  }
+  
+  .image-card img {
+    max-width: 100%; /* Ensure image fits within container */
+  }
+
+  .welcome-section {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.welcome-section h1 {
+    font-weight: bold;
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.welcome-section h3 {
+    font-size: 18px;
+    line-height: 1.5;
+    text-align: center; /* Center align the text */
+}
+
+.posts-container {
+    margin-top: 20px;
+}
+
+.post-image-wrapper {
+    margin-bottom: 40px; /* Add space between each card */
+}
+
+.post-card {
+    border: 1px solid #ddd;
+    padding: 20px;
+    background-color: #f9f9f9; /* Light gray background color for post cards */
+}
+
+.image-card {
+    padding: 20px;
+    background-color: #f9f9f9; /* Light gray background color for image cards */
+}
+
+.button-group {
+    margin-top: 20px;
+    text-align: center; /* Center align the buttons */
+}
+
+.button-group a {
+    margin-right: 10px;
+}

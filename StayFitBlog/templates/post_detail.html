@@ -9,11 +9,11 @@
 
   <div class="comments-section">
     <h4>Comments:</h4>
-    {% for comment in post.comments %}
+    {% for comment in post.comment %}
     <div class="comment">
       <p>{{ comment.content }}</p>
       <small
-        >Commented by {{ comment.commenter.name }} on {{
+        >Commented by {{ comment.comment.name }} on {{
         comment.date_posted.strftime('%Y-%m-%d') }}</small
       >
     </div>
