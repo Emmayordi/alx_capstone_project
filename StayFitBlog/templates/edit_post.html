@@ -1,13 +1,14 @@
 <!--Edit post.html-->
-{% block contents %}
+{% extends 'layout.html' %} {% block contents %}
 <div class="container">
   <h2>Edit Post</h2>
   <form method="POST" action="{{ url_for('edit_post', post_id=post.id) }}">
     {{ form.hidden_tag() }}
     <div class="form-group">
       {{ form.title.label(class="form-control-label") }} {{
-      form.title(class="form-control", value=post.title) }} {% if
-      form.title.errors %}
+      form.title(class="form-control") }}
+      <!-- Automatically filled -->
+      {% if form.title.errors %}
       <div class="alert alert-danger">
         {% for error in form.title.errors %}
         <span>{{ error }}</span>
@@ -17,8 +18,9 @@
     </div>
     <div class="form-group">
       {{ form.content.label(class="form-control-label") }} {{
-      form.content(class="form-control", value=post.content) }} {% if
-      form.content.errors %}
+      form.content(class="form-control") }}
+      <!-- Automatically filled -->
+      {% if form.content.errors %}
       <div class="alert alert-danger">
         {% for error in form.content.errors %}
         <span>{{ error }}</span>

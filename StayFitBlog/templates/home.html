@@ -7,50 +7,34 @@
   >
     <h2>{{ post.title }}</h2>
     <p>{{ post.content | truncate(100, True, '...') }}</p>
-    <small>
-      Posted by {{ post.author.name }} on {{ post.date_posted.strftime('%Y-%m-%d
-      %H:%M') }}
-    </small>
-
-    <!-- Display comments for this post -->
-    {% if post.comments %}
-    <div
-      class="comments-section"
-      style="margin-top: 20px; background-color: #f9f9f9; padding: 10px"
+    <small
+      >Posted by {{ post.author.name }} on {{
+      post.date_posted.strftime('%Y-%m-%d %H:%M') }}</small
     >
-      <h4>Comments:</h4>
-      {% for comment in post.comments %}
-      <div class="comment" style="padding: 5px; border-bottom: 1px solid #eee">
-        <p style="margin-bottom: 0">{{ comment.content }}</p>
-        <small>
-          Commented by {{ comment.commenter.name }} on {{
-          comment.date_posted.strftime('%Y-%m-%d') }}
-        </small>
-      </div>
-      {% endfor %}
-    </div>
-    {% endif %}
 
-    <!-- Comment, Edit, and Read More Buttons -->
-    <div style="margin-top: 10px">
+    <!-- Previously existing buttons replaced with the new btn-group -->
+    <div
+      style="margin-top: 10px"
+      class="btn-group"
+      role="group"
+      aria-label="Post actions"
+    >
       <a
         href="{{ url_for('post_detail', post_id=post.id) }}"
-        class="btn"
+        class="btn btn-secondary"
         style="margin-right: 5px"
-        >Comment</a
+        >View & Comment</a
       >
       {% if current_user.is_authenticated and current_user.id == post.author.id
       %}
       <a
         href="{{ url_for('edit_post', post_id=post.id) }}"
-        class="btn"
+        class="btn btn-info"
         style="margin-right: 5px"
         >Edit</a
       >
       {% endif %}
-      <a href="{{ url_for('post_detail', post_id=post.id) }}" class="btn"
-        >Read More</a
-      >
+      <!-- The Delete Account button typically wouldn't be placed here as it affects user account, not post actions -->
     </div>
   </div>
   {% endfor %}
@@ -59,6 +43,13 @@
 {% if current_user.is_authenticated %}
 <div style="margin-top: 20px">
   <a href="{{ url_for('add_post') }}" class="add-post-btn">Add Post</a>
+  <!-- Delete Account button should be more appropriately placed outside of the posts loop, perhaps in a user profile section or settings page -->
+  <a
+    href="{{ url_for('delete_account') }}"
+    class="btn btn-danger"
+    onclick="return confirm('Are you sure you want to delete your account? This action cannot be undone.');"
+    >Delete Account</a
+  >
 </div>
 {% else %}
 <div style="margin-top: 20px">

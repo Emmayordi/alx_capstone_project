@@ -1,70 +1,42 @@
 {% extends 'layout.html' %} {% block contents %}
-<div class="posts-container" style="margin-top: 20px">
-  {% for post in posts %}
-  <div
-    class="post-card"
-    style="border: 1px solid #ddd; padding: 20px; margin-bottom: 30px"
+<div class="post-detail-container">
+  <h2>{{ post.title }}</h2>
+  <p>{{ post.content }}</p>
+  <small
+    >Posted by {{ post.author.name }} on {{ post.date_posted.strftime('%Y-%m-%d
+    %H:%M') }}</small
   >
-    <h2>{{ post.title }}</h2>
-    <p>{{ post.content | truncate(100, True, '...') }}</p>
-    <small
-      >Posted by {{ post.author.name }} on {{
-      post.date_posted.strftime('%Y-%m-%d %H:%M') }}</small
-    >
 
-    <!-- Display comments for this post -->
-    {% if post.comments %}
-    <div
-      class="comments-section"
-      style="margin-top: 20px; background-color: #f9f9f9; padding: 10px"
-    >
-      <h4>Comments:</h4>
-      {% for comment in post.comments %}
-      <div class="comment" style="padding: 5px; border-bottom: 1px solid #eee">
-        <p style="margin-bottom: 0">{{ comment.content }}</p>
-        <small
-          >Commented by {{ comment.commenter.name }} on {{
-          comment.date_posted.strftime('%Y-%m-%d') }}</small
-        >
-      </div>
-      {% endfor %}
-    </div>
-    {% endif %}
-
-    <!-- Comment, Edit, and Read More Buttons -->
-    <div style="margin-top: 10px">
-      <a
-        href="{{ url_for('post_detail', post_id=post.id) }}"
-        class="btn"
-        style="margin-right: 5px"
-        >Comment</a
-      >
-      {% if current_user.is_authenticated and current_user.id == post.author.id
-      %}
-      <a
-        href="{{ url_for('edit_post', post_id=post.id) }}"
-        class="btn"
-        style="margin-right: 5px"
-        >Edit</a
-      >
-      {% endif %}
-      <a href="{{ url_for('post_detail', post_id=post.id) }}" class="btn"
-        >Read More</a
+  <div class="comments-section">
+    <h4>Comments:</h4>
+    {% for comment in post.comments %}
+    <div class="comment">
+      <p>{{ comment.content }}</p>
+      <small
+        >Commented by {{ comment.commenter.name }} on {{
+        comment.date_posted.strftime('%Y-%m-%d') }}</small
       >
     </div>
+    {% endfor %}
   </div>
-  {% endfor %}
+
+  {% if current_user.is_authenticated %}
+  <form action="{{ url_for('post_comment', post_id=post.id) }}" method="POST">
+    {{ form.hidden_tag() }}
+    <div class="form-group">
+      {{ form.content.label(class="form-control-label") }} {{
+      form.content(class="form-control") }} {% if form.content.errors %}
+      <div class="alert alert-danger">
+        {% for error in form.content.errors %}
+        <span>{{ error }}</span>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+    <button type="submit" class="btn btn-primary">Submit Comment</button>
+  </form>
+  {% else %}
+  <p>Please <a href="{{ url_for('login') }}">login</a> to add a comment.</p>
+  {% endif %}
 </div>
-{% if current_user.is_authenticated %}
-<div style="margin-top: 20px">
-  <a href="{{ url_for('add_post') }}" class="add-post-btn">Add Post</a>
-</div>
-{% else %}
-<div style="margin-top: 20px">
-  <a
-    href="{{ url_for('login', next=request.endpoint) }}"
-    class="login-to-add-post-btn"
-    >Login to Add Post</a
-  >
-</div>
-{% endif %} {% endblock %}
+{% endblock %}

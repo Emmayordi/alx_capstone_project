@@ -84,23 +84,20 @@ def add_post():
 #Post deatal
 @app.route('/post/<int:post_id>', methods=['GET', 'POST'])
 def post_detail(post_id):
-    post = Post.query.get_or_404(post_id)  # Retrieve the post or 404
+    post = Post.query.get_or_404(post_id)
     form = CommentForm()
-    if form.validate_on_submit():
-        if current_user.is_authenticated:
-            # Create and add the new comment to the database
-            comment = Comment(content=form.content.data, user_id=current_user.id, post_id=post_id)
-            db.session.add(comment)
-            db.session.commit()
-            flash('Your comment has been added.', 'success')
-        else:
-            flash('You need to be logged in to comment.', 'danger')
+    if current_user.is_authenticated and form.validate_on_submit():
+        comment = Comment(content=form.content.data, user_id=current_user.id, post_id=post_id)
+        db.session.add(comment)
+        db.session.commit()
+        flash('Your comment has been added.', 'success')
         return redirect(url_for('post_detail', post_id=post_id))
-    
-    comments = Comment.query.filter_by(post_id=post_id).all()  # Retrieve all comments for this post
+    elif not current_user.is_authenticated and form.validate_on_submit():
+        flash('You need to be logged in to comment.', 'danger')
+        return redirect(url_for('login'))  # Assuming 'login' is the route for your login page
+
+    comments = Comment.query.filter_by(post_id=post_id).all()
     return render_template('post_detail.html', post=post, form=form, comments=comments)
-
-
 #Commint
 @app.route('/post/<int:post_id>/comment', methods=['POST'])
 @login_required
@@ -114,21 +111,55 @@ def comment_post(post_id):
     else:
         for error in form.content.errors:
             flash(error, 'danger')
-    return redirect(url_for('post_detail', post_id=post_id))
+    return redirect(url_for('home', post_id=post_id))
 #Edit
+ 
+
 @app.route('/edit_post/<int:post_id>', methods=['GET', 'POST'])
+@login_required
 def edit_post(post_id):
     post = Post.query.get_or_404(post_id)
     if current_user.id != post.author.id:
         abort(403)
-    form = PostForm()
+    form = AddPostForm(obj=post)  # Using AddPostForm here
     if form.validate_on_submit():
         post.title = form.title.data
         post.content = form.content.data
         db.session.commit()
         flash('Your post has been updated!', 'success')
-        return redirect(url_for('post_detail', post_id=post.id))
-    elif request.method == 'GET':
-        form.title.data = post.title
-        form.content.data = post.content
+        return redirect(url_for('home', post_id=post.id))
     return render_template('edit_post.html', title='Edit Post', form=form, post=post)
+# Post_Comment
+
+@app.route('/post/<int:post_id>/comment', methods=['POST'])
+@login_required
+def post_comment(post_id):
+    form = CommentForm()
+    if form.validate_on_submit():
+        # Create a new Comment instance
+        comment = Comment(content=form.content.data, user_id=current_user.id, post_id=post_id)
+        # Add the comment to the database
+        db.session.add(comment)
+        db.session.commit()
+        flash('Your comment has been published.', 'success')
+    else:
+        # Flash form errors if validation fails
+        for _, errors in form.errors.items():
+            for error in errors:
+                flash(error, 'danger')
+    
+    # Redirect back to the post detail page
+    return redirect(url_for('post_detail', post_id=post_id))
+
+# delete Account 
+
+@app.route('/delete_account')
+@login_required
+def delete_account():
+    user = User.query.get(current_user.id)
+    if user:
+        db.session.delete(user)  # Delete the user's account
+        db.session.commit()
+        logout_user()  # Log the user out
+        flash('Your account has been deleted.', 'info')
+        return redirect(url_for('home')) 
