@@ -2,7 +2,7 @@ from flask import render_template, redirect, url_for, flash, request
 from flask_login import login_required, current_user, login_user, logout_user
 from StayFitBlog import app, bcrypt, db
 from StayFitBlog.models import User, Post, Comment,add_user
-from StayFitBlog.forms import LoginForm, RegisterForm, AddPostForm, CommentForm
+from StayFitBlog.forms import LoginForm, RegisterForm, AddPostForm, CommentForm,DeletePostForm
 
 from bleach import clean
 
@@ -26,6 +26,11 @@ def home():
             flash('Login Unsuccessful. Please check email and password.', 'danger')
     posts = Post.query.all()
     return render_template('home.html', posts=posts, login_form=login_form if not current_user.is_authenticated else None)
+
+#About Me
+@app.route('/about')
+def about():
+    return render_template('about_me.html')
 #Login
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -86,18 +91,25 @@ def add_post():
 def post_detail(post_id):
     post = Post.query.get_or_404(post_id)
     form = CommentForm()
+
+    # Handle comment form submission
     if current_user.is_authenticated and form.validate_on_submit():
         comment = Comment(content=form.content.data, user_id=current_user.id, post_id=post_id)
         db.session.add(comment)
         db.session.commit()
         flash('Your comment has been added.', 'success')
         return redirect(url_for('post_detail', post_id=post_id))
+
+    # Redirect non-authenticated users to login when attempting to comment
     elif not current_user.is_authenticated and form.validate_on_submit():
         flash('You need to be logged in to comment.', 'danger')
-        return redirect(url_for('login'))  # Assuming 'login' is the route for your login page
+        return redirect(url_for('login'))
 
-    comments = Comment.query.filter_by(post_id=post_id).all()
-    return render_template('post_detail.html', post=post, form=form, comments=comments)
+    # Decide whether to show comments based on a query parameter
+    show_comments = request.args.get('show_comments', 'true').lower() == 'true'
+    comments = Comment.query.filter_by(post_id=post_id).all() if show_comments else []
+
+    return render_template('post_detail.html', post=post, form=form, comments=comments, show_comments=show_comments)
 #Commint
 @app.route('/post/<int:post_id>/comment', methods=['POST'])
 @login_required
@@ -151,15 +163,16 @@ def post_comment(post_id):
     # Redirect back to the post detail page
     return redirect(url_for('post_detail', post_id=post_id))
 
-# delete Account 
-
-@app.route('/delete_account')
+@app.route('/delete_post/<int:post_id>', methods=['POST', 'GET'])
 @login_required
-def delete_account():
-    user = User.query.get(current_user.id)
-    if user:
-        db.session.delete(user)  # Delete the user's account
-        db.session.commit()
-        logout_user()  # Log the user out
-        flash('Your account has been deleted.', 'info')
-        return redirect(url_for('home')) 
+def delete_post(post_id):
+    post = Post.query.get_or_404(post_id)
+    if post.author.id != current_user.id:
+        abort(403)
+    
+    db.session.delete(post)
+    db.session.commit()
+    flash('THe post hade been deleted.', 'success')
+    return redirect(url_for('home'))
+  
+

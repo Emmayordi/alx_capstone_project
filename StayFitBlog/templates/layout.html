@@ -34,6 +34,12 @@
         justify-content: space-between;
         align-items: center;
         padding: 0.5rem 1rem;
+        @media (max-width: 768px) {
+          .custom-navbar {
+            flex-direction: column; /* Stacks nav items vertically on smaller screens */
+            width: 100%; /* Full width */
+          }
+        }
       "
     >
       <a
@@ -59,6 +65,15 @@
               href="{{ url_for('home') }}"
               style="color: #fff; text-decoration: none"
               >Home</a
+            >
+          </li>
+
+          <li class="nav-item" style="margin: 0 10px">
+            <a
+              class="nav-link"
+              href="{{ url_for('about') }}"
+              style="color: #fff; text-decoration: none"
+              >About</a
             >
           </li>
           {% if not current_user.is_authenticated %}

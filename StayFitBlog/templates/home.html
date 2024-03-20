@@ -1,84 +1,83 @@
 {% extends 'layout.html' %} {% block contents %}
 <div class="welcome-section">
-  <h1>Welcome to MomFitLife Blog</h1>
-  <h3>
-    A blog web app supporting women to have a healthy life and raising awareness
-    <br />
-    about Postpartum depression, enabling family members to share knowledge and
-    <br />
-    health-related issues including weight management.
-  </h3>
+  <h1>Welcome to StayFitBlog</h1>
+  <div class="content-and-image">
+    <div class="text-content">
+      <p>
+        StayFitBlog is more than just a blog; it’s a platform dedicated to
+        spreading awareness,<br />
+        sharing knowledge, and providing support to those affected by postpartum
+        depression and lupus. <br />
+        My goal is to empower individuals with information about these
+        conditions and promote a healthy <br />
+        lifestyle through education and awareness. By sharing insights and
+        resources, I hope to create <br />
+        a community where individuals can find support, encouragement, and
+        inspiration to lead healthier lives.
+      </p>
+      <p>
+        Join me in the journey to raise awareness and promote wellness.
+        Together, let’s embrace a healthier lifestyle <br />
+        and empower others to StayFit, both physically and mentally. ❤️
+      </p>
+
+      <!-- Additional content can go here -->
+    </div>
+    <div class="image-content">
+      <img
+        src="{{ url_for('static', filename='images/1.png') }}"
+        alt="Healthy Life"
+      />
+    </div>
+  </div>
 </div>
-<div class="posts-container" style="margin-top: 20px">
+<div class="posts-flex-container">
   {% for post in posts %}
   <div class="post-wrapper">
-    <!-- Existing content for each post -->
-    <div
-      class="post-card"
-      style="border: 1px solid #ddd; padding: 20px; margin-bottom: 30px"
+    <h2>{{ post.title }}</h2>
+    <p>{{ post.content | truncate(100, True, '...') }}</p>
+    <small
+      >Posted by {{ post.author.name }} on {{
+      post.date_posted.strftime('%Y-%m-%d %H:%M') }}</small
     >
-      <h2>{{ post.title }}</h2>
-      <p>{{ post.content | truncate(100, True, '...') }}</p>
-      <small
-        >Posted by {{ post.author.name }} on {{
-        post.date_posted.strftime('%Y-%m-%d %H:%M') }}</small
+    <div style="margin-top: 40px">
+      <a
+        href="{{ url_for('post_detail', post_id=post.id) }}"
+        class="btn btn-secondary"
+        style="margin-right: 200px"
+        >View & Comment</a
       >
-
-      <!-- Previously existing buttons replaced with the new btn-group -->
-      <div
-        style="margin-top: 10px"
-        class="btn-group"
-        role="group"
-        aria-label="Post actions"
+      {% if current_user.is_authenticated and current_user.id == post.author.id
+      %}
+      <a
+        href="{{ url_for('edit_post', post_id=post.id) }}"
+        class="btn btn-info"
+        style="margin-right: 5px"
+        >Edit</a
       >
-        <a
-          href="{{ url_for('post_detail', post_id=post.id) }}"
-          class="btn btn-secondary"
-          style="margin-right: 5px"
-          >View & Comment</a
-        >
-        {% if current_user.is_authenticated and current_user.id ==
-        post.author.id %}
-        <a
-          href="{{ url_for('edit_post', post_id=post.id) }}"
-          class="btn btn-info"
-          style="margin-right: 5px"
-          >Edit</a
-        >
-        {% endif %}
-        <!-- The Delete Account button typically wouldn't be placed here as it affects user account, not post actions -->
-      </div>
-    </div>
-    <!-- End of existing post card -->
+      <!-- Delete Post Form -->
+      <form
+        action="{{ url_for('delete_post', post_id=post.id) }}"
+        method="POST"
+      >
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+        <button type="submit" class="btn btn-danger">Delete Post</button>
+      </form>
 
-    <!-- New card with picture -->
-    <div class="image-card">
-      <img src="static/images/1.png" alt="Image" />
-      <div class="card-content">
-        <p>Some text content goes here.</p>
-      </div>
+      {% endif %}
     </div>
-    <!-- End of new card -->
   </div>
   {% endfor %}
 </div>
-
 {% if current_user.is_authenticated %}
-<div style="margin-top: 20px">
-  <a href="{{ url_for('add_post') }}" class="add-post-btn">Add Post</a>
-  <!-- Delete Account button should be more appropriately placed outside of the posts loop, perhaps in a user profile section or settings page -->
-  <a
-    href="{{ url_for('delete_account') }}"
-    class="btn btn-danger"
-    onclick="return confirm('Are you sure you want to delete your account? This action cannot be undone.');"
-    >Delete Account</a
-  >
+<div style="margin-top: 100px">
+  <a href="{{ url_for('add_post') }}" class="btn btn-primary">Add Post</a>
 </div>
 {% else %}
-<div style="margin-top: 20px">
+<div style="margin-bottom: 200px">
   <a
     href="{{ url_for('login', next=request.endpoint) }}"
-    class="login-to-add-post-btn"
+    class="btn btn-secondary"
     >Login to Add Post</a
   >
 </div>

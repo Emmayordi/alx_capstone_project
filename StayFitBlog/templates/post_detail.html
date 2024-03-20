@@ -7,19 +7,23 @@
     %H:%M') }}</small
   >
 
+  <!-- Your Comments Section Here -->
   <div class="comments-section">
     <h4>Comments:</h4>
-    {% for comment in post.comment %}
+    {% for comment in post.comments %}
     <div class="comment">
       <p>{{ comment.content }}</p>
       <small
-        >Commented by {{ comment.comment.name }} on {{
+        >Commented by {{ comment.commenter.name }} on {{
         comment.date_posted.strftime('%Y-%m-%d') }}</small
       >
     </div>
+    {% else %}
+    <p>No comments yet.</p>
     {% endfor %}
   </div>
 
+  <!-- Comment Form for Logged-In Users -->
   {% if current_user.is_authenticated %}
   <form action="{{ url_for('post_comment', post_id=post.id) }}" method="POST">
     {{ form.hidden_tag() }}

@@ -4,6 +4,9 @@ from wtforms import StringField, PasswordField, SubmitField, TextAreaField, Bool
 from wtforms.validators import DataRequired, Email, ValidationError
 from StayFitBlog.models import User
 
+class DeletePostForm(FlaskForm):
+    submit = SubmitField('Delete Post')
+
 class RegisterForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
