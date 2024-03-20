@@ -29,7 +29,7 @@ StayFitBlog aims to serve as more than just a blog; it is envisioned as a beacon
 ![Screenshot of my project](![alt text](<StayFitBlog/static/images/Screenshot 2024-03-20 at 11.11.38 AM.png>))
 ![Screenshot of my project](![alt text](<StayFitBlog/static/images/Screenshot 2024-03-20 at 11.12.55 AM.png>)/screenshot.png)
 ![Screenshot of my project](![alt text](StayFitBlog/static/images/7.png)/screenshot.png)
-
+-live demo youtube
 [[ ](https://youtu.be/RPPG62TFLMA?si=9EW5Bae0rpDe8NDP)]()
 
 ### Roadmap and Future Enhancements
